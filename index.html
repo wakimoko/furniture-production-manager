@@ -5,76 +5,488 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>家具生産管理</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;background:#fff;color:#111}.app{max-width:520px;margin:auto;min-height:100vh;padding-bottom:78px}.head{position:sticky;top:0;background:#fff;border-bottom:1px solid #eee;padding:16px;z-index:2}h1{font-size:26px;margin:0;font-weight:800}h2{font-size:21px;margin:0}.row{display:flex;align-items:center;justify-content:space-between;gap:8px}.week{display:grid;grid-template-columns:50px repeat(5,1fr) 50px 42px;gap:6px;margin-top:14px}.week button,.btn,.blueBtn,.whiteBtn{border-radius:10px;border:1px solid #ddd;background:#fff;padding:10px 6px;font-weight:800}.week .active,.blueBtn{background:#0b65e5;color:white;border-color:#0b65e5}.week small{display:block;font-size:11px}.content{padding:16px}.card{border:1px solid #e6e6e6;border-radius:12px;margin:10px 0;background:#fff;overflow:hidden}.item{display:grid;grid-template-columns:38px 1fr 70px 22px;gap:8px;align-items:center;padding:17px 12px;border-bottom:1px solid #eee}.item:last-child{border-bottom:0}.check{width:27px;height:27px;border:2px solid #222;border-radius:5px;display:grid;place-items:center;font-weight:900}.check.done{background:#34b957;color:#fff;border-color:#34b957}.link{border:0;background:transparent;color:#0b65e5;font-size:19px;font-weight:800;text-align:left;padding:0}.qty{text-align:right;font-size:18px;font-weight:800}.chev{font-size:24px;color:#0b65e5}.tabs{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:auto;height:72px;background:#fff;border-top:1px solid #ddd;display:grid;grid-template-columns:1fr 1fr}.tabs button{border:0;background:#fff;font-weight:800;color:#555}.tabs .active{color:#0b65e5;border-top:3px solid #0b65e5}.back{border:0;background:#fff;font-size:30px}.panel{border:1px solid #e6e6e6;border-radius:12px;padding:14px;margin:12px 0}.process{font-size:18px;font-weight:900;border-bottom:2px solid #0b65e5;padding-bottom:6px;margin-top:20px}.task{display:grid;grid-template-columns:30px 1fr;gap:8px;padding:12px 0;border-bottom:1px solid #f0f0f0}.task input[type=checkbox]{width:22px;height:22px}.memo{width:100%;margin-top:7px;border:1px solid #ddd;border-radius:8px;padding:9px;min-height:40px}.field{width:100%;border:1px solid #ddd;border-radius:9px;padding:13px;margin:8px 0 14px;font-size:16px}textarea.field{min-height:170px}.menu{width:100%;border:1px solid #e5e5e5;background:#fff;border-radius:12px;padding:18px;text-align:left;font-size:18px;font-weight:900;margin:10px 0;display:flex;justify-content:space-between}.toggle{display:flex;gap:10px;align-items:center;padding:14px 0;border-bottom:1px solid #eee;font-weight:800}.toggle input{width:22px;height:22px}.small{color:#666;font-size:13px}.danger{color:#d33;border-color:#d33}.memoIcon{color:#d33}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;background:#fff;color:#111}
+.app{max-width:520px;margin:auto;min-height:100vh;padding-bottom:78px}
+.head{position:sticky;top:0;background:#fff;border-bottom:1px solid #eee;padding:16px;z-index:2}
+h1{font-size:26px;margin:0;font-weight:800}
+h2{font-size:21px;margin:0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.week{display:grid;grid-template-columns:50px repeat(5,1fr) 50px 42px;gap:6px;margin-top:14px}
+.week button,.blueBtn,.whiteBtn{border-radius:10px;border:1px solid #ddd;background:#fff;padding:10px 6px;font-weight:800}
+.week .active,.blueBtn{background:#0b65e5;color:white;border-color:#0b65e5}
+.week small{display:block;font-size:11px}
+.content{padding:16px}
+.card{border:1px solid #e6e6e6;border-radius:12px;margin:10px 0;background:#fff;overflow:hidden}
+.item{display:grid;grid-template-columns:38px 1fr 70px 22px;gap:8px;align-items:center;padding:17px 12px;border-bottom:1px solid #eee}
+.item:last-child{border-bottom:0}
+.check{width:27px;height:27px;border:2px solid #222;border-radius:5px;display:grid;place-items:center;font-weight:900}
+.check.done{background:#34b957;color:#fff;border-color:#34b957}
+.link{border:0;background:transparent;color:#0b65e5;font-size:19px;font-weight:800;text-align:left;padding:0}
+.qty{text-align:right;font-size:18px;font-weight:800}
+.chev{font-size:24px;color:#0b65e5}
+.tabs{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:auto;height:72px;background:#fff;border-top:1px solid #ddd;display:grid;grid-template-columns:1fr 1fr}
+.tabs button{border:0;background:#fff;font-weight:800;color:#555}
+.tabs .active{color:#0b65e5;border-top:3px solid #0b65e5}
+.back{border:0;background:#fff;font-size:30px}
+.panel{border:1px solid #e6e6e6;border-radius:12px;padding:14px;margin:12px 0}
+.process{font-size:18px;font-weight:900;border-bottom:2px solid #0b65e5;padding-bottom:6px;margin-top:20px}
+.task{display:grid;grid-template-columns:30px 1fr;gap:8px;padding:12px 0;border-bottom:1px solid #f0f0f0}
+.task input[type=checkbox]{width:22px;height:22px}
+.memo{width:100%;margin-top:7px;border:1px solid #ddd;border-radius:8px;padding:9px;min-height:40px}
+.field{width:100%;border:1px solid #ddd;border-radius:9px;padding:13px;margin:8px 0 14px;font-size:16px}
+textarea.field{min-height:170px}
+.menu{width:100%;border:1px solid #e5e5e5;background:#fff;border-radius:12px;padding:18px;text-align:left;font-size:18px;font-weight:900;margin:10px 0;display:flex;justify-content:space-between}
+.toggle{display:flex;gap:10px;align-items:center;padding:14px 0;border-bottom:1px solid #eee;font-weight:800}
+.toggle input{width:22px;height:22px}
+.small{color:#666;font-size:13px}
+.danger{color:#d33;border-color:#d33}
+.memoIcon{color:#d33}
+.warn{background:#fff5d8;border-color:#f0d27c}
 </style>
 </head>
 <body>
 <div id="app"></div>
-<script>
-const ADMIN_PASSWORD="1234";
-const DEFAULT_PROCESSES=["木取り","加工","サンディング","塗装","オイル","組立て","検品","梱包"];
-let S={screen:"production",date:ymd(new Date()),item:null,processId:null,
-items:JSON.parse(localStorage.fp_items||"[]"),
-processes:JSON.parse(localStorage.fp_processes||"null")||DEFAULT_PROCESSES.map((n,i)=>({id:uid(),name:n,order:i,tasks:[]}))};
-save();
-function save(){localStorage.fp_items=JSON.stringify(S.items);localStorage.fp_processes=JSON.stringify(S.processes)}
-function render(){({production,detail,setting,login,admin,paste,processAdmin,taskAdmin}[S.screen])()}
-function layout(html,tab="production"){app.innerHTML=`<div class="app">${html}<div class="tabs"><button id="tProd" class="${tab=="production"?"active":""}">☷<br>生産</button><button id="tAdm" class="${tab=="admin"?"active":""}">⚙<br>管理</button></div></div>`;tProd.onclick=()=>{S.screen="production";render()};tAdm.onclick=()=>{S.screen="login";render()}}
+
+<script type="module">
+const firebaseConfig = {
+  apiKey: "AIzaSyDuF1ZbPdwFDsD6eMdjwYpdzQUIACc6KCQ",
+  authDomain: "furniture-production-manager.firebaseapp.com",
+  projectId: "furniture-production-manager",
+  storageBucket: "furniture-production-manager.firebasestorage.app",
+  messagingSenderId: "836063100556",
+  appId: "1:836063100556:web:7089a7b0e1da382c1805a9"
+};
+
+const ADMIN_PASSWORD = "1234";
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+let db = null;
+let firebaseReady = false;
+
+const DEFAULT_PROCESSES = ["木取り","加工","サンディング","塗装","オイル","組立て","検品","梱包"];
+let S = {
+  screen: "production",
+  date: ymd(new Date()),
+  item: null,
+  processId: null,
+  items: [],
+  processes: []
+};
+
+try {
+  const fb = initializeApp(firebaseConfig);
+  db = getFirestore(fb);
+  firebaseReady = true;
+} catch (e) {
+  console.warn("Firebase接続失敗", e);
+}
+
+if (firebaseReady) {
+  onSnapshot(collection(db, "processMaster"), async snap => {
+    S.processes = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b)=>(a.order||0)-(b.order||0));
+    if (S.processes.length === 0) {
+      for (const [i, name] of DEFAULT_PROCESSES.entries()) {
+        await setDoc(doc(db, "processMaster", uid()), { name, order: i, tasks: [] });
+      }
+      return;
+    }
+    render();
+  });
+
+  onSnapshot(collection(db, "productionItems"), snap => {
+    S.items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    render();
+  });
+} else {
+  S.items = JSON.parse(localStorage.fp_items || "[]");
+  S.processes = JSON.parse(localStorage.fp_processes || "null") || DEFAULT_PROCESSES.map((name, i) => ({ id: uid(), name, order: i, tasks: [] }));
+  saveLocal();
+  render();
+}
+
+function saveLocal(){
+  localStorage.fp_items = JSON.stringify(S.items);
+  localStorage.fp_processes = JSON.stringify(S.processes);
+}
+
+async function saveItem(item){
+  if (firebaseReady) {
+    await setDoc(doc(db, "productionItems", item.id), item);
+  } else {
+    const i = S.items.findIndex(x => x.id === item.id);
+    if (i >= 0) S.items[i] = item;
+    else S.items.push(item);
+    saveLocal();
+    render();
+  }
+}
+
+async function saveProcess(process){
+  if (firebaseReady) {
+    await setDoc(doc(db, "processMaster", process.id), process);
+  } else {
+    const i = S.processes.findIndex(x => x.id === process.id);
+    if (i >= 0) S.processes[i] = process;
+    else S.processes.push(process);
+    syncAll();
+    saveLocal();
+    render();
+  }
+}
+
+async function deleteProcess(process){
+  if (firebaseReady) {
+    await deleteDoc(doc(db, "processMaster", process.id));
+  } else {
+    S.processes = S.processes.filter(x => x.id !== process.id);
+    saveLocal();
+    render();
+  }
+}
+
+function render(){
+  const pages = { production, detail, setting, login, admin, paste, processAdmin, taskAdmin };
+  (pages[S.screen] || production)();
+}
+
+function layout(html, tab="production"){
+  app.innerHTML = `
+    <div class="app">
+      ${html}
+      <div class="tabs">
+        <button id="tProd" class="${tab==="production"?"active":""}">☷<br>生産</button>
+        <button id="tAdm" class="${tab==="admin"?"active":""}">⚙<br>管理</button>
+      </div>
+    </div>`;
+  tProd.onclick = () => { S.screen = "production"; render(); };
+  tAdm.onclick = () => { S.screen = "login"; render(); };
+}
+
 function production(){
- const week=getWeek(S.date), list=S.items.filter(x=>x.date==S.date);
- layout(`<div class="head"><div class="row"><h1>家具生産管理</h1></div><div class="week"><button id="prev">前週</button>${week.map(d=>`<button data-d="${ymd(d)}" class="${ymd(d)==S.date?"active":""}">${d.getMonth()+1}/${d.getDate()}<small>${"日月火水木金土"[d.getDay()]}</small></button>`).join("")}<button id="next">次週</button><button id="cal">📅</button></div></div><div class="content"><h2>${jpdate(S.date)} の生産リスト</h2><div class="card">${list.length?list.map(x=>`<div class="item"><div class="check ${x.completed?"done":""}">${x.completed?"✓":""}</div><button class="link" data-open="${x.id}">${esc(x.name)} ${x.hasMemo?'<span class="memoIcon">📝</span>':""}</button><div class="qty">${x.qty}台</div><div class="chev">›</div></div>`).join(""):`<div class="panel small">この日の生産リストはありません。管理から日報を貼り付けてください。</div>`}</div></div>`);
- prev.onclick=()=>move(-7);next.onclick=()=>move(7);cal.onclick=()=>{let i=document.createElement("input");i.type="date";i.value=S.date;i.onchange=()=>{S.date=i.value;render()};i.showPicker?i.showPicker():i.click()};
- document.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{S.date=b.dataset.d;render()});
- document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{S.item=S.items.find(x=>x.id==b.dataset.open);ensure(S.item);S.screen="detail";render()});
+  const week = getWeek(S.date);
+  const list = S.items.filter(x => x.date === S.date);
+
+  layout(`
+    <div class="head">
+      <div class="row"><h1>家具生産管理</h1></div>
+      <div class="week">
+        <button id="prev">前週</button>
+        ${week.map(d => `<button data-d="${ymd(d)}" class="${ymd(d)===S.date?"active":""}">${d.getMonth()+1}/${d.getDate()}<small>${"日月火水木金土"[d.getDay()]}</small></button>`).join("")}
+        <button id="next">次週</button>
+        <button id="cal">📅</button>
+      </div>
+    </div>
+    <div class="content">
+      ${!firebaseReady ? '<div class="panel warn small">Firebase未接続です。</div>' : ""}
+      <h2>${jpdate(S.date)} の生産リスト</h2>
+      <div class="card">
+        ${list.length ? list.map(x => `
+          <div class="item">
+            <div class="check ${x.completed?"done":""}">${x.completed?"✓":""}</div>
+            <button class="link" data-open="${x.id}">${esc(x.name)} ${x.hasMemo?'<span class="memoIcon">📝</span>':""}</button>
+            <div class="qty">${x.qty}台</div>
+            <div class="chev">›</div>
+          </div>`).join("") : `<div class="panel small">この日の生産リストはありません。管理から日報を貼り付けてください。</div>`}
+      </div>
+    </div>`);
+
+  prev.onclick = () => move(-7);
+  next.onclick = () => move(7);
+  cal.onclick = () => {
+    const input = document.createElement("input");
+    input.type = "date";
+    input.value = S.date;
+    input.onchange = () => { S.date = input.value; render(); };
+    input.showPicker ? input.showPicker() : input.click();
+  };
+  document.querySelectorAll("[data-d]").forEach(b => b.onclick = () => { S.date = b.dataset.d; render(); });
+  document.querySelectorAll("[data-open]").forEach(b => b.onclick = () => {
+    S.item = S.items.find(x => x.id === b.dataset.open);
+    ensureItem(S.item);
+    S.screen = "detail";
+    render();
+  });
 }
+
 function detail(){
- let x=S.item;ensure(x);
- layout(`<div class="head"><div class="row"><button class="back" id="back">‹</button><h2>${esc(x.name)}</h2><button class="whiteBtn" id="set">⚙ 工程設定</button></div></div><div class="content"><div class="panel"><b>数量：${x.qty}台</b></div>${x.enabled.map(p=>{let tasks=x.processes[p]?.tasks||[];return `<div class="process">${esc(p)}</div>${tasks.length?tasks.map((t,i)=>`<div class="task"><input type="checkbox" data-c="${p}" data-i="${i}" ${t.done?"checked":""}><div><b>${esc(t.name)}</b><textarea class="memo" placeholder="メモ：" data-m="${p}" data-i="${i}">${esc(t.memo||"")}</textarea></div></div>`).join(""):`<div class="panel small">小工程が未登録です。管理 ＞ 工程管理で追加してください。</div>`}`}).join("")}</div>`);
- back.onclick=()=>{S.screen="production";render()};set.onclick=()=>{S.screen="setting";render()};
- document.querySelectorAll("[data-c]").forEach(e=>e.onchange=()=>{let p=e.dataset.c,i=+e.dataset.i;x.processes[p].tasks[i].done=e.checked;calc(x);save();render()});
- document.querySelectorAll("[data-m]").forEach(e=>e.onchange=()=>{let p=e.dataset.m,i=+e.dataset.i;x.processes[p].tasks[i].memo=e.value;calc(x);save();render()});
+  const item = S.item;
+  ensureItem(item);
+
+  layout(`
+    <div class="head">
+      <div class="row">
+        <button class="back" id="back">‹</button>
+        <h2>${esc(item.name)}</h2>
+        <button class="whiteBtn" id="set">⚙ 工程設定</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="panel"><b>数量：${item.qty}台</b></div>
+      ${item.enabled.map(processName => {
+        const tasks = item.processes[processName]?.tasks || [];
+        return `
+          <div class="process">${esc(processName)}</div>
+          ${tasks.length ? tasks.map((t,i) => `
+            <div class="task">
+              <input type="checkbox" data-c="${processName}" data-i="${i}" ${t.done?"checked":""}>
+              <div>
+                <b>${esc(t.name)}</b>
+                <textarea class="memo" placeholder="メモ：" data-m="${processName}" data-i="${i}">${esc(t.memo||"")}</textarea>
+              </div>
+            </div>`).join("") : `<div class="panel small">小工程が未登録です。管理 ＞ 工程管理で追加してください。</div>`}
+        `;
+      }).join("")}
+    </div>`);
+
+  back.onclick = () => { S.screen = "production"; render(); };
+  set.onclick = () => { S.screen = "setting"; render(); };
+
+  document.querySelectorAll("[data-c]").forEach(e => e.onchange = async () => {
+    const p = e.dataset.c;
+    const i = Number(e.dataset.i);
+    item.processes[p].tasks[i].done = e.checked;
+    calcItem(item);
+    await saveItem(item);
+  });
+
+  document.querySelectorAll("[data-m]").forEach(e => e.onchange = async () => {
+    const p = e.dataset.m;
+    const i = Number(e.dataset.i);
+    item.processes[p].tasks[i].memo = e.value;
+    calcItem(item);
+    await saveItem(item);
+  });
 }
+
 function setting(){
- let x=S.item;ensure(x);
- layout(`<div class="head"><div class="row"><button class="back" id="back">‹</button><h2>工程設定</h2><span></span></div></div><div class="content">${S.processes.map(p=>`<label class="toggle"><input type="checkbox" data-p="${esc(p.name)}" ${x.enabled.includes(p.name)?"checked":""}>${esc(p.name)}</label>`).join("")}<button class="blueBtn" id="saveBtn">保存</button></div>`);
- back.onclick=()=>{S.screen="detail";render()};saveBtn.onclick=()=>{x.enabled=[...document.querySelectorAll("[data-p]")].filter(e=>e.checked).map(e=>e.dataset.p);ensure(x);calc(x);save();S.screen="detail";render()}
+  const item = S.item;
+  ensureItem(item);
+
+  layout(`
+    <div class="head"><div class="row"><button class="back" id="back">‹</button><h2>工程設定</h2><span></span></div></div>
+    <div class="content">
+      ${S.processes.map(p => `<label class="toggle"><input type="checkbox" data-p="${esc(p.name)}" ${item.enabled.includes(p.name)?"checked":""}>${esc(p.name)}</label>`).join("")}
+      <button class="blueBtn" id="saveBtn">保存</button>
+    </div>`);
+
+  back.onclick = () => { S.screen = "detail"; render(); };
+  saveBtn.onclick = async () => {
+    item.enabled = [...document.querySelectorAll("[data-p]")].filter(e => e.checked).map(e => e.dataset.p);
+    ensureItem(item);
+    calcItem(item);
+    await saveItem(item);
+    S.screen = "detail";
+    render();
+  };
 }
+
 function login(){
- layout(`<div class="head"><h1>管理ログイン</h1></div><div class="content"><div class="panel"><p>管理画面に入るにはパスワードを入力してください。</p><input id="pw" class="field" type="password" placeholder="パスワード"><button class="blueBtn" id="loginBtn">ログイン</button><p class="small">初期パスワード：1234</p></div></div>`,"admin");
- loginBtn.onclick=()=>{if(pw.value===ADMIN_PASSWORD){S.screen="admin";render()}else alert("パスワードが違います")}
+  layout(`
+    <div class="head"><h1>管理ログイン</h1></div>
+    <div class="content">
+      <div class="panel">
+        <p>管理画面に入るにはパスワードを入力してください。</p>
+        <input id="pw" class="field" type="password" placeholder="パスワード">
+        <button class="blueBtn" id="loginBtn">ログイン</button>
+        <p class="small">初期パスワード：1234</p>
+      </div>
+    </div>`, "admin");
+
+  loginBtn.onclick = () => {
+    if (pw.value === ADMIN_PASSWORD) {
+      S.screen = "admin";
+      render();
+    } else {
+      alert("パスワードが違います");
+    }
+  };
 }
+
 function admin(){
- layout(`<div class="head"><h1>管理メニュー</h1></div><div class="content"><button class="menu" id="pasteBtn">日報貼り付け <span>›</span></button><button class="menu" id="procBtn">工程管理 <span>›</span></button></div>`,"admin");
- pasteBtn.onclick=()=>{S.screen="paste";render()};procBtn.onclick=()=>{S.screen="processAdmin";render()}
+  layout(`
+    <div class="head"><h1>管理メニュー</h1></div>
+    <div class="content">
+      <button class="menu" id="pasteBtn">日報貼り付け <span>›</span></button>
+      <button class="menu" id="procBtn">工程管理 <span>›</span></button>
+    </div>`, "admin");
+
+  pasteBtn.onclick = () => { S.screen = "paste"; render(); };
+  procBtn.onclick = () => { S.screen = "processAdmin"; render(); };
 }
+
 function paste(){
- layout(`<div class="head"><div class="row"><button class="back" id="back">‹</button><h2>日報貼り付け</h2><span></span></div></div><div class="content"><b>生産日</b><input id="pdate" class="field" type="date" value="${S.date}"><b>アイテム・数量</b><textarea id="txt" class="field" placeholder="テーブルA 5&#10;チェアB 20&#10;TVボードA 3"></textarea><button class="blueBtn" id="reg">登録</button><div class="panel small">1行に「アイテム名 数量」。スペース・タブ・カンマ対応。</div></div>`,"admin");
- back.onclick=()=>{S.screen="admin";render()};reg.onclick=()=>{let rows=parse(txt.value);if(!rows.length)return alert("登録できる行がありません");rows.forEach(r=>S.items.push(newItem(pdate.value,r.name,r.qty)));S.date=pdate.value;save();S.screen="production";render()}
+  layout(`
+    <div class="head"><div class="row"><button class="back" id="back">‹</button><h2>日報貼り付け</h2><span></span></div></div>
+    <div class="content">
+      <b>生産日</b>
+      <input id="pdate" class="field" type="date" value="${S.date}">
+      <b>アイテム・数量</b>
+      <textarea id="txt" class="field" placeholder="テーブルA 5&#10;チェアB 20&#10;TVボードA 3"></textarea>
+      <button class="blueBtn" id="reg">登録</button>
+      <div class="panel small">1行に「アイテム名 数量」。スペース・タブ・カンマ対応。</div>
+    </div>`, "admin");
+
+  back.onclick = () => { S.screen = "admin"; render(); };
+  reg.onclick = async () => {
+    const rows = parsePaste(txt.value);
+    if (!rows.length) return alert("登録できる行がありません");
+    for (const r of rows) await saveItem(newItem(pdate.value, r.name, r.qty));
+    S.date = pdate.value;
+    S.screen = "production";
+    render();
+  };
 }
+
 function processAdmin(){
- layout(`<div class="head"><div class="row"><button class="back" id="back">‹</button><h2>工程管理</h2><button class="whiteBtn" id="add">＋大工程</button></div></div><div class="content">${S.processes.map(p=>`<button class="menu" data-proc="${p.id}">${esc(p.name)} <span>${p.tasks.length}件 ›</span></button>`).join("")}</div>`,"admin");
- back.onclick=()=>{S.screen="admin";render()};add.onclick=()=>{let n=prompt("大工程名");if(n){S.processes.push({id:uid(),name:n,order:S.processes.length,tasks:[]});sync();save();render()}};
- document.querySelectorAll("[data-proc]").forEach(b=>b.onclick=()=>{S.processId=b.dataset.proc;S.screen="taskAdmin";render()})
+  layout(`
+    <div class="head"><div class="row"><button class="back" id="back">‹</button><h2>工程管理</h2><button class="whiteBtn" id="add">＋大工程</button></div></div>
+    <div class="content">
+      ${S.processes.map(p => `<button class="menu" data-proc="${p.id}">${esc(p.name)} <span>${(p.tasks||[]).length}件 ›</span></button>`).join("")}
+    </div>`, "admin");
+
+  back.onclick = () => { S.screen = "admin"; render(); };
+  add.onclick = async () => {
+    const name = prompt("大工程名");
+    if (name) await saveProcess({ id: uid(), name, order: S.processes.length, tasks: [] });
+  };
+  document.querySelectorAll("[data-proc]").forEach(b => b.onclick = () => {
+    S.processId = b.dataset.proc;
+    S.screen = "taskAdmin";
+    render();
+  });
 }
+
 function taskAdmin(){
- let p=S.processes.find(x=>x.id==S.processId);
- layout(`<div class="head"><div class="row"><button class="back" id="back">‹</button><h2>${esc(p.name)}</h2><span></span></div></div><div class="content">${p.tasks.length?p.tasks.map((t,i)=>`<div class="panel row"><b>${esc(t)}</b><span><button class="whiteBtn" data-e="${i}">編集</button> <button class="whiteBtn danger" data-del="${i}">削除</button></span></div>`).join(""):`<div class="panel small">小工程はまだありません。</div>`}<button class="blueBtn" id="addTask">＋小工程追加</button></div>`,"admin");
- back.onclick=()=>{S.screen="processAdmin";render()};addTask.onclick=()=>{let n=prompt("小工程名");if(n){p.tasks.push(n);sync();save();render()}};
- document.querySelectorAll("[data-e]").forEach(b=>b.onclick=()=>{let i=+b.dataset.e,n=prompt("小工程名",p.tasks[i]);if(n){p.tasks[i]=n;sync();save();render()}});
- document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{let i=+b.dataset.del;if(confirm("削除しますか？")){p.tasks.splice(i,1);sync();save();render()}});
+  const p = S.processes.find(x => x.id === S.processId);
+
+  layout(`
+    <div class="head"><div class="row"><button class="back" id="back">‹</button><h2>${esc(p.name)}</h2><span></span></div></div>
+    <div class="content">
+      ${(p.tasks||[]).length ? p.tasks.map((t,i) => `
+        <div class="panel row">
+          <b>${esc(t)}</b>
+          <span>
+            <button class="whiteBtn" data-e="${i}">編集</button>
+            <button class="whiteBtn danger" data-del="${i}">削除</button>
+          </span>
+        </div>`).join("") : `<div class="panel small">小工程はまだありません。</div>`}
+      <button class="blueBtn" id="addTask">＋小工程追加</button>
+    </div>`, "admin");
+
+  back.onclick = () => { S.screen = "processAdmin"; render(); };
+  addTask.onclick = async () => {
+    const name = prompt("小工程名");
+    if (name) {
+      p.tasks = p.tasks || [];
+      p.tasks.push(name);
+      await saveProcess(p);
+      await syncAll();
+    }
+  };
+  document.querySelectorAll("[data-e]").forEach(b => b.onclick = async () => {
+    const i = Number(b.dataset.e);
+    const name = prompt("小工程名", p.tasks[i]);
+    if (name) {
+      p.tasks[i] = name;
+      await saveProcess(p);
+      await syncAll();
+    }
+  });
+  document.querySelectorAll("[data-del]").forEach(b => b.onclick = async () => {
+    const i = Number(b.dataset.del);
+    if (confirm("削除しますか？")) {
+      p.tasks.splice(i, 1);
+      await saveProcess(p);
+      await syncAll();
+    }
+  });
 }
-function newItem(date,name,qty){let x={id:uid(),date,name,qty,completed:false,hasMemo:false,enabled:S.processes.map(p=>p.name),processes:{}};ensure(x);return x}
-function ensure(x){if(!x.processes)x.processes={};if(!x.enabled)x.enabled=S.processes.map(p=>p.name);S.processes.forEach(p=>{let old=x.processes[p.name]?.tasks||[];let map=Object.fromEntries(old.map(t=>[t.name,t]));x.processes[p.name]={tasks:p.tasks.map(n=>map[n]||{name:n,done:false,memo:""})}})}
-function sync(){S.items.forEach(x=>{ensure(x);calc(x)})}
-function calc(x){let tasks=x.enabled.flatMap(p=>x.processes[p]?.tasks||[]);x.completed=tasks.length>0&&tasks.every(t=>t.done);x.hasMemo=tasks.some(t=>(t.memo||"").trim())}
-function parse(text){return text.split("\n").map(l=>l.trim()).filter(Boolean).map(l=>{let m=l.match(/^(.+?)[\s,、\t]+(\d+)$/);return m?{name:m[1].trim(),qty:+m[2]}:null}).filter(Boolean)}
-function getWeek(s){let d=new Date(s+"T00:00:00"),m=new Date(d);m.setDate(d.getDate()-((d.getDay()+6)%7));return[0,1,2,3,4].map(i=>{let x=new Date(m);x.setDate(m.getDate()+i);return x})}
-function move(n){let d=new Date(S.date+"T00:00:00");d.setDate(d.getDate()+n);S.date=ymd(d);render()}
-function ymd(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
-function jpdate(s){let d=new Date(s+"T00:00:00");return`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${"日月火水木金土"[d.getDay()]}）`}
-function uid(){return crypto.randomUUID?crypto.randomUUID():Date.now()+Math.random().toString(16).slice(2)}
-function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
-render();
+
+function newItem(date, name, qty){
+  const item = { id: uid(), date, name, qty, completed:false, hasMemo:false, enabled:S.processes.map(p=>p.name), processes:{} };
+  ensureItem(item);
+  return item;
+}
+
+function ensureItem(item){
+  if (!item) return;
+  if (!item.processes) item.processes = {};
+  if (!item.enabled) item.enabled = S.processes.map(p=>p.name);
+
+  S.processes.forEach(p => {
+    const old = item.processes[p.name]?.tasks || [];
+    const oldMap = Object.fromEntries(old.map(t => [t.name, t]));
+    item.processes[p.name] = {
+      tasks: (p.tasks || []).map(name => oldMap[name] || { name, done:false, memo:"" })
+    };
+  });
+}
+
+async function syncAll(){
+  for (const item of S.items) {
+    ensureItem(item);
+    calcItem(item);
+    await saveItem(item);
+  }
+}
+
+function calcItem(item){
+  const tasks = item.enabled.flatMap(p => item.processes[p]?.tasks || []);
+  item.completed = tasks.length > 0 && tasks.every(t => t.done);
+  item.hasMemo = tasks.some(t => (t.memo || "").trim());
+}
+
+function parsePaste(text){
+  return text.split("\\n").map(l=>l.trim()).filter(Boolean).map(line => {
+    const m = line.match(/^(.+?)[\\s,、\\t]+(\\d+)$/);
+    return m ? { name:m[1].trim(), qty:Number(m[2]) } : null;
+  }).filter(Boolean);
+}
+
+function getWeek(s){
+  const d = new Date(s+"T00:00:00");
+  const monday = new Date(d);
+  monday.setDate(d.getDate() - ((d.getDay()+6)%7));
+  return [0,1,2,3,4].map(i => {
+    const x = new Date(monday);
+    x.setDate(monday.getDate()+i);
+    return x;
+  });
+}
+
+function move(n){
+  const d = new Date(S.date+"T00:00:00");
+  d.setDate(d.getDate()+n);
+  S.date = ymd(d);
+  render();
+}
+
+function ymd(d){
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+function jpdate(s){
+  const d = new Date(s+"T00:00:00");
+  return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${"日月火水木金土"[d.getDay()]}）`;
+}
+
+function uid(){
+  return crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2);
+}
+
+function esc(v){
+  return String(v ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
 </script>
 </body>
 </html>
